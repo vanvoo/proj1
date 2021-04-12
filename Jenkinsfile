@@ -1,27 +1,27 @@
 pipeline {
   environment {
-    registry = “vanvoo/proj1”
-    registryCredential = ‘DockerHubCredentials’
-    dockerImage = ‘’
+    registry = "vanvoo/proj1"
+    registryCredential = 'DockerHubCredentials'
+    dockerImage = ''
   }
   agent any
   stages {
-    stage(‘Cloning’) {
+    stage('Cloning Git') {
       steps {
-        git ‘https://github.com/vanvoo/proj1.git‘
+        git 'https://github.com/vanvoo/proj1.git'
       }
     }
-    stage(‘Building image’) {
+    stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + “:$BUILD_NUMBER”
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
-    stage(‘Deploy Image’) {
+    stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry( ‘’, registryCredential ) {
+          docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
           }
         }
